@@ -1,16 +1,21 @@
 """Backtracking Sudoku Solver.
 
 Solves a 9x9 Sudoku puzzle using a recursive backtracking algorithm.
+Each empty cell (value ``0``) is filled by trying digits 1-9 while
+respecting row, column, and 3x3 box constraints.
 """
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import List
 
-EMPTY = 0
-SIZE = 9
+EMPTY: int = 0
+SIZE: int = 9
+BOX: int = 3
 
-EXAMPLE_BOARD = [
+Board = List[List[int]]
+
+EXAMPLE_BOARD: Board = [
     [5, 3, 0, 0, 7, 0, 0, 0, 0],
     [6, 0, 0, 1, 9, 5, 0, 0, 0],
     [0, 9, 8, 0, 0, 0, 0, 6, 0],
@@ -23,21 +28,41 @@ EXAMPLE_BOARD = [
 ]
 
 
-def print_board(board: list[list[int]]) -> None:
+def validate_board(board: Board) -> None:
+    """Raise ``ValueError`` if *board* is not a valid 9x9 Sudoku grid.
+
+    Checks dimensions and that every cell value is an integer in 0-9.
+    """
+    if len(board) != SIZE:
+        raise ValueError(f"Board must have {SIZE} rows, got {len(board)}")
+    for i, row in enumerate(board):
+        if len(row) != SIZE:
+            raise ValueError(
+                f"Row {i} must have {SIZE} columns, got {len(row)}"
+            )
+        for j, val in enumerate(row):
+            if not isinstance(val, int) or not (0 <= val <= SIZE):
+                raise ValueError(
+                    f"Invalid value {val!r} at ({i}, {j}); "
+                    f"expected int 0–{SIZE}"
+                )
+
+
+def print_board(board: Board) -> None:
     """Print the board in a human-readable grid format."""
     for i, row in enumerate(board):
-        if i % 3 == 0 and i != 0:
+        if i % BOX == 0 and i != 0:
             print("-" * 21)
         line = ""
         for j, val in enumerate(row):
-            if j % 3 == 0 and j != 0:
+            if j % BOX == 0 and j != 0:
                 line += "| "
             line += f"{val if val != EMPTY else '.'} "
         print(line.rstrip())
 
 
-def find_empty(board: list[list[int]]) -> Optional[tuple[int, int]]:
-    """Return the (row, col) of the first empty cell, or None if full."""
+def find_empty(board: Board) -> tuple[int, int] | None:
+    """Return the ``(row, col)`` of the first empty cell, or ``None``."""
     for r in range(SIZE):
         for c in range(SIZE):
             if board[r][c] == EMPTY:
@@ -45,22 +70,22 @@ def find_empty(board: list[list[int]]) -> Optional[tuple[int, int]]:
     return None
 
 
-def is_valid(board: list[list[int]], row: int, col: int, num: int) -> bool:
-    """Check whether placing `num` at (row, col) is valid."""
+def is_valid(board: Board, row: int, col: int, num: int) -> bool:
+    """Check whether placing *num* at (*row*, *col*) is valid."""
     if num in board[row]:
         return False
     if any(board[r][col] == num for r in range(SIZE)):
         return False
-    box_r, box_c = 3 * (row // 3), 3 * (col // 3)
-    for r in range(box_r, box_r + 3):
-        for c in range(box_c, box_c + 3):
+    box_r, box_c = BOX * (row // BOX), BOX * (col // BOX)
+    for r in range(box_r, box_r + BOX):
+        for c in range(box_c, box_c + BOX):
             if board[r][c] == num:
                 return False
     return True
 
 
-def solve(board: list[list[int]]) -> bool:
-    """Solve the board in-place using backtracking. Return True if solved."""
+def solve(board: Board) -> bool:
+    """Solve the board in-place using backtracking. Return ``True`` if solved."""
     cell = find_empty(board)
     if cell is None:
         return True
@@ -76,7 +101,8 @@ def solve(board: list[list[int]]) -> bool:
 
 def main() -> None:
     """Run the solver on the example board."""
-    board = [row[:] for row in EXAMPLE_BOARD]
+    board: Board = [row[:] for row in EXAMPLE_BOARD]
+    validate_board(board)
     print("Puzzle:")
     print_board(board)
     print()

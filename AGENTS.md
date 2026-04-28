@@ -2,12 +2,12 @@
 
 ## Project Overview
 
-Backtracking Sudoku Solver — a single-file Python program that solves 9×9 Sudoku puzzles using recursive backtracking.
+Backtracking Sudoku Solver — a single-file Python program that solves 9x9 Sudoku puzzles using recursive backtracking.
 
 ## How to Run
 
 ```bash
-python main.py
+python3 main.py
 ```
 
 ## Key Files
@@ -20,7 +20,7 @@ python main.py
 
 ## Coding Conventions
 
-- **Language**: Python 3.10+
+- **Language**: Python 3.7+
 - **Type hints**: Use on all function signatures
 - **Docstrings**: Required for every function and module
 - **Constants**: UPPER_SNAKE_CASE at module level
