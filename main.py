@@ -8,7 +8,7 @@ respecting row, column, and 3x3 box constraints.
 from __future__ import annotations
 
 import sys
-from typing import List
+from typing import List, Optional, Tuple
 
 EMPTY: int = 0
 SIZE: int = 9
@@ -62,7 +62,7 @@ def print_board(board: Board) -> None:
         print(line.rstrip())
 
 
-def find_empty(board: Board) -> tuple[int, int] | None:
+def find_empty(board: Board) -> Optional[Tuple[int, int]]:
     """Return the ``(row, col)`` of the first empty cell, or ``None``."""
     for r in range(SIZE):
         for c in range(SIZE):
