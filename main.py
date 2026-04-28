@@ -103,7 +103,11 @@ def solve(board: Board) -> bool:
 def main() -> None:
     """Run the solver on the example board."""
     board: Board = [row[:] for row in EXAMPLE_BOARD]
-    validate_board(board)
+    try:
+        validate_board(board)
+    except ValueError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        sys.exit(1)
     print("Puzzle:")
     print_board(board)
     print()
@@ -111,7 +115,7 @@ def main() -> None:
         print("Solution:")
         print_board(board)
     else:
-        print("No solution exists.")
+        print("No solution exists.", file=sys.stderr)
         sys.exit(1)
 
 
