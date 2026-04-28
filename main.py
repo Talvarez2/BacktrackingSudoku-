@@ -45,7 +45,7 @@ def validate_board(board: Board) -> None:
             if not isinstance(val, int) or not (0 <= val <= SIZE):
                 raise ValueError(
                     f"Invalid value {val!r} at ({i}, {j}); "
-                    f"expected int 0–{SIZE}"
+                    f"expected int 0\u2013{SIZE}"
                 )
 
 
@@ -54,12 +54,12 @@ def print_board(board: Board) -> None:
     for i, row in enumerate(board):
         if i % BOX == 0 and i != 0:
             print("-" * 21)
-        line = ""
+        cells = []
         for j, val in enumerate(row):
             if j % BOX == 0 and j != 0:
-                line += "| "
-            line += f"{val if val != EMPTY else '.'} "
-        print(line.rstrip())
+                cells.append("|")
+            cells.append(str(val) if val != EMPTY else ".")
+        print(" ".join(cells))
 
 
 def find_empty(board: Board) -> Optional[Tuple[int, int]]:
