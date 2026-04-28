@@ -7,6 +7,7 @@ respecting row, column, and 3x3 box constraints.
 
 from __future__ import annotations
 
+import sys
 from typing import List
 
 EMPTY: int = 0
@@ -111,6 +112,7 @@ def main() -> None:
         print_board(board)
     else:
         print("No solution exists.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

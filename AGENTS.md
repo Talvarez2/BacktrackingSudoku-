@@ -16,6 +16,7 @@ python3 main.py
 |------|---------|
 | `main.py` | Solver logic and entry point |
 | `README.md` | Project documentation |
+| `AGENTS.md` | AI agent conventions |
 | `.gitignore` | Git ignore rules |
 
 ## Coding Conventions
